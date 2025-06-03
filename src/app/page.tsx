@@ -24,9 +24,16 @@ export default function CatFactsApp(): JSX.Element {
 
             const data: CatFact = await response.json(); // Type the incoming data
             setFact(data.fact); // Update the fact state with the fact string
-        } catch (err: any) { // Catch block for network or parsing errors
-            console.error("Failed to fetch cat fact:", err);
-            setError(`Failed to load fact: ${err.message || 'Unknown error'}.`);
+        } catch (err: unknown) { // Use 'unknown' for better type safety
+            // Now, we need to check if 'err' is an Error instance before accessing 'message'
+            if (err instanceof Error) {
+                console.error("Failed to fetch cat fact:", err);
+                setError(`Failed to load fact: ${err.message}.`);
+            } else {
+                // Handle cases where err is not an Error object (e.g., a string or number)
+                console.error("Failed to fetch cat fact: An unknown error occurred", err);
+                setError(`Failed to load fact: An unknown error occurred.`);
+            }
         } finally {
             setLoading(false); // Set loading to false after fetch completes (success or error)
         }
@@ -52,7 +59,7 @@ export default function CatFactsApp(): JSX.Element {
 
                 {fact && !loading && (
                     <p className="text-xl font-medium text-gray-800 dark:text-gray-200 mb-6">
-                        "{fact}"
+                        &quot;{fact}&quot; {/* Changed for react/no-unescaped-entities ESLint rule */}
                     </p>
                 )}
 

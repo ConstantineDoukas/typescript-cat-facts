@@ -1,10 +1,11 @@
 // src/app/page.tsx
+/// <reference types="react/jsx-runtime" /> //
 'use client'; // This directive is crucial for client-side state and effects
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CatFact } from '../types/catFact.d'; // Import our defined type
 
-export default function CatFactsApp(): JSX.Element {
+export default function CatFactsApp(): React.JSX.Element {
     const [fact, setFact] = useState<string | null>(null); // State to store the fetched fact
     const [loading, setLoading] = useState<boolean>(true); // State for loading indicator
     const [error, setError] = useState<string | null>(null); // State for error messages
